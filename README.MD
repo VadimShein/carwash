@@ -5,9 +5,10 @@
 ## Описание:
 Приложение производит онлайн запись на автомойку. Используется Rest архитектура.  
 
-Пользователи регистрируются, затем авторизируются с использованием JWT token. 
-Пользователь выбирает услугу и записывается на нужное время. 
-Также пользователь может посмотреть оставшееся время до предоставления услуги, в формате ХХ days and xx:yy:zz.
+Пользователи регистрируются, затем авторизируются с использованием JWT token.
+Пользователь выбирает услугу и записывается на нужное время.
+Если время необходимое для услуги пересекается с уже забронированными услугами, то приложение оповещает об этом.
+Также пользователь может посмотреть оставшееся время, в формате ХХ days and xx:yy:zz.
 Администратор может добавлять, удалять предоставляемые услуги и удалять пользователей.
 
 Пользователь по умолчанию: username: user, password: 123  
@@ -27,49 +28,49 @@ http://localhost:8080/swagger-ui/index.html
 
 ## Использование REST API пользователем
 
-1. Регистрация пользователя
+1. Регистрация пользователя  
 curl -i --header "Content-Type: application/json" \
 --request POST 'http://localhost:8080/registration' \
 -d '{"username":"user_1", "password":"123"}'
 
-2. Получение JWT токена
+2. Получение JWT токена  
 curl -i --header "Content-Type: application/json" \
 --request POST 'http://localhost:8080/login' \
 -d '{"username":"user_1", "password":"123"}'
 
-3. Получение списка услуг
+3. Получение списка услуг  
 curl -i -H "Authorization: Bearer your_token" \
 'http://localhost:8080/employment'
 
-4. Запись на услугу
+4. Запись на услугу  
 curl -i --header "Content-Type: application/json" \
 -H "Authorization: Bearer your_token" \
 --request POST 'http://localhost:8080/task' \
 -d '{"startTime":"2023-02-20T16:00:00", "user": {"id": 1}, "employment":{"id": 1}}'
 
-5. Просмотр оставшегося времени до предоставления услуги
+5. Просмотр оставшегося времени до предоставления услуги  
 curl -i -H "Authorization: Bearer your_token" \
 'http://localhost:8080/task/1'
 
 ## Использование REST API администратором
 
-1. Регистрация администратора
+1. Регистрация администратора  
 curl -i --header "Content-Type: application/json" \
 --request POST 'http://localhost:8080/admin/registration' \
 -d '{"username":"user_1", "password":"123"}'
 
-2. Удаление пользователя (только с правами администратора)
+2. Удаление пользователя (только с правами администратора)  
 curl -i --header "Content-Type: application/json" \
 -H "Authorization: Bearer your_token" \
 --request DELETE 'http://localhost:8080/admin/1'
 
-3. Добавление услуги в список предоставляемых услуг (только с правами администратора)
+3. Добавление услуги в список предоставляемых услуг (только с правами администратора)  
 curl -i --header "Content-Type: application/json" \
 -H "Authorization: Bearer your_token" \
 --request POST 'http://localhost:8080/employment' \
--d '{"name": "Engine wash", "duration": "00:15:00"}}'
+-d '{"name": "Engine wash", "duration": "00:15:00"}'
 
-4. Удаление услуги из списка предоставляемых услуг (только с правами администратора)
+4. Удаление услуги из списка предоставляемых услуг (только с правами администратора)  
 curl -i --header "Content-Type: application/json" \
 -H "Authorization: Bearer your_token" \
 --request DELETE 'http://localhost:8080/employment/1'
@@ -77,7 +78,7 @@ curl -i --header "Content-Type: application/json" \
 ## Запуск проекта:
 1. Скопировать проект 
 ```
-git clone https://github.com/VadimShein/job4j_carwash
+git clone https://github.com/VadimShein/carwash
 ```
 
 2. Создать базу данных carwash 

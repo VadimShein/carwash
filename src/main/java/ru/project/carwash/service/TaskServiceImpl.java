@@ -3,12 +3,14 @@ package ru.project.carwash.service;
 import org.springframework.stereotype.Service;
 import ru.project.carwash.entity.Employment;
 import ru.project.carwash.entity.Task;
+import ru.project.carwash.entity.TaskDTO;
 import ru.project.carwash.entity.TimeLeftResponse;
 import ru.project.carwash.repository.EmploymentRepository;
 import ru.project.carwash.repository.TaskRepository;
 
 import java.time.*;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 
 @Service("TaskServiceImpl")
@@ -24,7 +26,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task addTask(Task task) {
+    public TaskDTO addTask(Task task) {
         Optional<Employment> employment = employmentRepository.findById(task.getEmployment().getId());
         if (employment.isPresent()) {
             LocalDateTime finishTime = task.getStartTime()
@@ -32,11 +34,17 @@ public class TaskServiceImpl implements TaskService {
                     .plusMinutes(employment.get().getDuration().getMinute())
                     .plusSeconds(employment.get().getDuration().getSecond());
             task.setFinishTime(finishTime);
+            List<Task> tsk = taskRepository.findAllByStartTimeLessThanAndFinishTimeGreaterThan(
+                    task.getFinishTime(), task.getStartTime());
+            if (tsk.size() > 0) {
+                throw new RuntimeException("Time is already taken");
+            }
             task.setStatus(WAITING);
             taskRepository.save(task);
-            return task;
+            return new TaskDTO(task.getId(), task.getStartTime(), task.getFinishTime(), task.getStatus(),
+                    task.getUser().getId(), task.getEmployment().getId());
         }
-        return new Task();
+        return new TaskDTO();
     }
 
     @Override

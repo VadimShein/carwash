@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.project.carwash.entity.Task;
+import ru.project.carwash.entity.TaskDTO;
 import ru.project.carwash.entity.TimeLeftResponse;
 import ru.project.carwash.service.TaskService;
 
@@ -24,7 +25,7 @@ public class TaskController {
     }
 
     @PostMapping("/task")
-    public ResponseEntity<Task> addTask(@Valid @RequestBody Task task) {
+    public ResponseEntity<TaskDTO> addTask(@Valid @RequestBody Task task) {
         if (task.getUser().getId() == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "User id mustn't be 0");
         }
