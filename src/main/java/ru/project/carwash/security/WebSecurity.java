@@ -28,6 +28,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
+                .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/registration", "/admin/registration", "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/admin/role").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/admin").hasRole("ADMIN")
