@@ -1,5 +1,7 @@
 package ru.project.carwash.controller;
 
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,8 +24,9 @@ public class AdminController {
         this.roleService = roleService;
     }
 
+    @MutationMapping
     @PostMapping("/admin/registration")
-    public ResponseEntity<UserDTO> register(@Valid @RequestBody User user) {
+    public ResponseEntity<UserDTO> registerAdmin(@Argument @Valid @RequestBody User user) {
         UserDTO result = userService.saveAdmin(user);
         return new ResponseEntity<>(
                 result,
@@ -31,14 +34,16 @@ public class AdminController {
         );
     }
 
+    @MutationMapping
     @PostMapping("/admin/role")
-    public ResponseEntity<Role> addRole(@Valid @RequestBody Role role) {
+    public ResponseEntity<Role> addRole(@Argument @Valid @RequestBody Role role) {
         return new ResponseEntity<>(roleService.saveRole(role), HttpStatus.CREATED);
     }
 
+    @MutationMapping
     @DeleteMapping("/admin/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
-        userService.deleteUser(Integer.parseInt(id));
+    public ResponseEntity<Void> deleteUser(@Argument @PathVariable int id) {
+        userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

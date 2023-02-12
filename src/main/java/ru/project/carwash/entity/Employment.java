@@ -67,13 +67,4 @@ public class Employment {
     public int hashCode() {
         return Objects.hash(id, name, duration);
     }
-
-    @Override
-    public String toString() {
-        return "Employment{"
-                + "id=" + id
-                + ", name='" + name + '\''
-                + ", duration=" + duration
-                + '}';
-    }
 }

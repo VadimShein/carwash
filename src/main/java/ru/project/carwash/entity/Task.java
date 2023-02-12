@@ -104,16 +104,4 @@ public class Task {
     public int hashCode() {
         return Objects.hash(id, startTime, finishTime, status, user, employment);
     }
-
-    @Override
-    public String toString() {
-        return "Task{"
-                + "id=" + id
-                + ", startTime=" + startTime
-                + ", finishTime=" + finishTime
-                + ", status='" + status + '\''
-                + ", user=" + user
-                + ", employment=" + employment
-                + '}';
-    }
 }

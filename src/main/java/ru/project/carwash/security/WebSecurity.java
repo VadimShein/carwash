@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -15,6 +16,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true)
 public class WebSecurity extends WebSecurityConfigurerAdapter {
     private final UserDetailsService service;
     private final BCryptPasswordEncoder encoder;
@@ -28,12 +30,13 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
+                .antMatchers("/graphiql").permitAll()
+                .antMatchers("/graphql").permitAll()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/registration", "/admin/registration", "/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/admin/role").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/admin").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/employment").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/employment").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/user/registration", "/admin/registration", "/login").permitAll()
+//                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.POST, "/employment").hasRole("ADMIN")
+//                .antMatchers(HttpMethod.DELETE, "/employment").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))

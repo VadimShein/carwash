@@ -1,9 +1,11 @@
 package ru.project.carwash.controller;
 
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import ru.project.carwash.entity.Task;
 import ru.project.carwash.entity.TaskDTO;
 import ru.project.carwash.entity.TimeLeftResponse;
@@ -19,22 +21,16 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @QueryMapping
     @GetMapping("/task/{taskId}")
-    public TimeLeftResponse getTimeLeft(@PathVariable String taskId) {
-        return taskService.getTimeLeft(Integer.parseInt(taskId));
+    public TimeLeftResponse getTimeLeft(@Argument @PathVariable int taskId) {
+        return taskService.getTimeLeft(taskId);
     }
 
+    @MutationMapping
     @PostMapping("/task")
-    public ResponseEntity<TaskDTO> addTask(@Valid @RequestBody Task task) {
-        if (task.getUser().getId() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "User id mustn't be 0");
-        }
-        if (task.getEmployment().getId() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Employment id mustn't be 0");
-        }
-        if (task.getStartTime() == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Start time mustn't be null");
-        }
+    public ResponseEntity<TaskDTO> addTask(@Argument @Valid @RequestBody Task task) {
+        System.out.println(task.getUser().getUsername());
         return new ResponseEntity<>(taskService.addTask(task), HttpStatus.CREATED);
     }
 }

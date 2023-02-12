@@ -80,15 +80,4 @@ public class TimeLeftResponse {
     public int hashCode() {
         return Objects.hash(taskId, userId, employmentId, timeLeft, status);
     }
-
-    @Override
-    public String toString() {
-        return "TimeLeftResponse{"
-                + "taskId=" + taskId
-                + ", userId=" + userId
-                + ", employmentId=" + employmentId
-                + ", timeLeft=" + timeLeft
-                + ", status='" + status + '\''
-                + '}';
-    }
 }

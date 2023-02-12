@@ -1,0 +1,93 @@
+
+scalar DateTime
+scalar LocalTime
+
+type Employment {
+    id: Int!
+    name: String
+    duration: String
+}
+
+type Role {
+    id: ID
+    name: String
+    users: User
+}
+
+type Task {
+    id: ID!
+    startTime: String
+    finishTime: String
+    status: String
+}
+
+type TaskDTO {
+    id: ID
+    startTime: String
+    finishTime: String
+    status: String
+    userId: Int
+    employmentId: Int
+}
+
+type User {
+    id: ID
+    username: String
+    password: String
+    enabled: String
+    roles: [Role]
+}
+
+type UserDTO {
+    username: String
+    enabled: String
+}
+
+type TimeLeftResponse {
+    taskId: Int
+    userId: Int
+    employmentId: Int
+    timeLeft: String
+    status: String
+}
+
+input UserInput {
+    id: ID
+    username: String
+    password: String
+}
+
+input RoleInput {
+    name: String
+}
+
+input EmploymentInput {
+    id: ID
+    name: String
+    duration: LocalTime
+}
+
+input TaskInput {
+    startTime: DateTime
+    user: UserInput
+    employment: EmploymentInput
+}
+
+type Query {
+    getAllEmployments: [Employment!]!
+    getEmploymentById(id: ID!): Employment
+    getTimeLeft(taskId: ID!): TimeLeftResponse
+    findUserByName(username: String!): User
+}
+
+type Mutation {
+    login(user: UserInput): String
+    registerAdmin(user: UserInput): UserDTO
+    addRole(role: RoleInput): Role
+    deleteUser(id: ID): String
+    deleteEmployment(id: ID): String
+    addEmployment(employment: EmploymentInput): Employment
+    addTask(task: TaskInput): TaskDTO
+    registerUser(user: UserInput): UserDTO
+}
+

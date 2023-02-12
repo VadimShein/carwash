@@ -92,16 +92,4 @@ public class TaskDTO {
     public int hashCode() {
         return Objects.hash(id, startTime, finishTime, status, userId, employmentId);
     }
-
-    @Override
-    public String toString() {
-        return "TaskDTO{"
-                + "id=" + id
-                + ", startTime=" + startTime
-                + ", finishTime=" + finishTime
-                + ", status='" + status + '\''
-                + ", userId=" + userId
-                + ", employmentId=" + employmentId
-                + '}';
-    }
 }

@@ -43,12 +43,4 @@ public class UserDTO {
     public int hashCode() {
         return Objects.hash(username, enabled);
     }
-
-    @Override
-    public String toString() {
-        return "UserDTO{"
-                + "username='" + username + '\''
-                + ", enabled=" + enabled
-                + '}';
-    }
 }

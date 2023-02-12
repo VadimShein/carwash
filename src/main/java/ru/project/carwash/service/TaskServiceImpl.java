@@ -59,7 +59,7 @@ public class TaskServiceImpl implements TaskService {
                     .minusMinutes(now.getMinute())
                     .minusSeconds(now.getSecond());
             long days = ChronoUnit.DAYS.between(now, task.get().getStartTime());
-            String answer = "Time left: " + days + " days and  " + timeLeft.getHour() + ":" + timeLeft.getMinute() + ":" + timeLeft.getSecond();
+            String answer = "Time left: " + days + " days and " + timeLeft.getHour() + ":" + timeLeft.getMinute() + ":" + timeLeft.getSecond();
             return new TimeLeftResponse(task.get().getId(), task.get().getUser().getId(),
                     task.get().getEmployment().getId(), answer, task.get().getStatus());
         }
